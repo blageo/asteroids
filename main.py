@@ -1,3 +1,4 @@
+import sys
 import pygame
 from constants import *
 from circleshape import CircleShape
@@ -38,14 +39,26 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
-        screen.fill("black")
+            
         
+        # updating
         updatable.update(dt)
-        for entity in drawable:
-            entity.draw(screen)
         
+        # handle collision
+        for asteroid in asteroids:
+            if asteroid.is_colliding(player):
+                print("Game Over!")
+                sys.exit()
+
+        # drawing
+        screen.fill("black")
+
+        for object in drawable:
+            object.draw(screen)
         
         pygame.display.flip()
+
+        # limit framerate to 60 fps
         dt = clock.tick(60) / 1000
 
 
